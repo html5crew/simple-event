@@ -1,0 +1,30 @@
+{
+  "name": "simple-event",
+  "version": "0.0.0",
+  "homepage": "https://github.com/html5crew/simple-event",
+  "authors": [
+    "dduskim",
+    "eastkiki",
+    "ragiragi"
+  ],
+  "description": "Simple Javascript DOM Event Library",
+  "main": "event.js",
+  "keywords": [
+    "event",
+    "dom event"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "*_spec.js",
+    "karma.conf.js",
+    "package.json",
+    "Gruntfile.js",
+    "README.md"
+  ],
+  "dependencies": {
+    "selector-alias": "~1.0.0"
+  }
+}
