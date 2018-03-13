@@ -2,15 +2,41 @@
 (function (exports) {
     "use strict";
 
+    /*
+     for EventListenerOptions in Chrome 51, Firefox 49 and landed in WebKit.
+     https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+     */
+
+    function isPassive() {
+        var supportsPassiveOption = false;
+        try {
+            addEventListener("test", null, Object.defineProperty({}, 'passive', {
+                get: function () {
+                    supportsPassiveOption = true;
+                }
+            }));
+        } catch(e) {}
+        return supportsPassiveOption;
+    }
+
     exports.DOMEvent = {
 
         on: function () {
             if (document.addEventListener) {
-                return function (el, type, fn) {
+                return function (el, type, fn, opt) {
                     if (!el) {
                         throw new Error('failed to add event. Element: "' + el + '", Event: "' + type + '", handler: ' + fn.toString());
                     }
-                    el.addEventListener(type, fn, false);
+
+                    if(isPassive() && opt) {
+                        if (!opt.hasOwnProperty('capture')) {
+                            opt.capture = false; //by default
+                        }
+                    } else {
+                        opt = false;
+                    }
+
+                    el.addEventListener(type, fn, opt);
                 };
             } else {
                 return function (el, type, fn) {
@@ -24,8 +50,15 @@
 
         off: function () {
             if (document.removeEventListener) {
-                return function (el, type, fn) {
-                    el.removeEventListener(type, fn, false);
+                return function (el, type, fn, opt) {
+                    if(isPassive() && opt) {
+                        if (!opt.hasOwnProperty('capture')) {
+                            opt.capture = false; //by default
+                        }
+                    } else {
+                        opt = false;
+                    }
+                    el.removeEventListener(type, fn, opt);
                 };
             } else {
                 return function (el, type, fn) {
