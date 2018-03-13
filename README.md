@@ -30,3 +30,7 @@ $ bower install simple-event
     
 </script>
 ```
+
+## support options parameter of addEventListener
+
+ref: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
